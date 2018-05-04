@@ -1,0 +1,18 @@
+WSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: My first serverless application.
+
+Resources:
+  Products:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: playground.core.Handler
+      Runtime: java8
+      Timeout: 15
+      CodeUri: ./target/playground-0.1.0-SNAPSHOT-standalone.jar
+      Events:
+        SayHello:
+          Type: Api
+          Properties:
+            Path: /sayHello
+            Method: get
