@@ -17,9 +17,3 @@
         res (handle-event ev)]
     (with-open [w (io/writer out)]
       (json/write res w))))
-
-;; Testing locally
-;; (let [in (io/input-stream (.getBytes "foo"))
-;;       out (ByteArrayOutputStream.)]
-;;   (.handleRequest (playground.core.Handler.) in out nil)
-;;   (.toString out))
