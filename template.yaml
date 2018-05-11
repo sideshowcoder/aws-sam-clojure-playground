@@ -14,5 +14,5 @@ Resources:
         SayHello:
           Type: Api
           Properties:
-            Path: /sayHello
+            Path: /sayHello/{helloId}
             Method: get

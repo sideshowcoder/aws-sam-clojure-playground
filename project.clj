@@ -5,5 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/data.json "0.2.6"]
+                 [ring "1.6.3"]
+                 [compojure "1.6.1"]
                  [com.amazonaws/aws-lambda-java-core "1.1.0"]]
   :profiles {:uberjar {:aot :all}})
