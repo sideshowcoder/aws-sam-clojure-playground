@@ -82,6 +82,11 @@
     (with-open [w (io/writer out)]
       (json/write event-response w))))
 
+
+;; TODO make this a macro to setup a handler for a lambda passed see
+;;      https://github.com/uswitch/lambada/blob/master/src/uswitch/lambada/core.clj
+;; TODO extract all of the adapter code into a seperate file for reuse
+;; TODO instead of sample handler create a compojure app route
 (defn -handleRequest
   "Implementation for RequestStreamHandler handleRequest using IN
   instream OUT outstream and CTX context object, delegating to
