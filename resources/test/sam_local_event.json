@@ -1,0 +1,34 @@
+{
+  "resource": "/sayHello/world",
+  "body": "",
+  "requestContext": {
+    "resourcePath": "/sayHello/world",
+    "httpMethod": "GET",
+    "stage": "prod",
+    "identity": {
+      "sourceIp": "127.0.0.1:54403"
+    }
+  },
+  "path": "/sayHello/world",
+  "httpMethod": "GET",
+  "pathParameters": {
+    "helloId": "world"
+  },
+  "queryStringParameters": {
+    "foo": "1",
+    "some": "queryparam"
+  },
+  "stageVariables": null,
+  "isBase64Encoded": false,
+  "headers": {
+    "X-Forwarded-Port": "",
+    "Content-Length": "0",
+    "Connection": "keep-alive",
+    "Mime-Version": "1.0",
+    "Extension": "Security/Digest Security/SSL",
+    "Accept-Charset": "utf-8;q=1",
+    "X-Forwarded-Proto": "",
+    "Accept": "*/*",
+    "Host": "127.0.0.1"
+  }
+}

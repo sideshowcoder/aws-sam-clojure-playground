@@ -67,7 +67,7 @@
 
 (defn ring-response->api-gw-response
   [response]
-  {:statuCode (:status response)
+  {:statusCode (:status response)
    :headers (:headers response)
    :body (wrap-body (:body response))})
 
