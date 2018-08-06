@@ -4,9 +4,6 @@
             [clojure.string :as s]
             [ring.util.codec :as codec]
             [ring.util.response :as r])
-  (:gen-class
-   :name playground.core.Handler
-   :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
   (:import [com.amazonaws.services.lambda.runtime RequestStreamHandler]
            [java.io InputStream File]
            [clojure.lang ISeq]))
@@ -82,14 +79,22 @@
     (with-open [w (io/writer out)]
       (json/write event-response w))))
 
+(defmacro deflambdaring
+  "Create a named class to use for lambda to call wrapping a ring application."
+  [name args & body]
+  `(do
+     (gen-class
+      :name ~name
+      :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
+     (defn ~(symbol "-handleRequest")
+       ~(into ['this] args)
+       ;; TODO replace with not just body but actually the content on handle-request
+       ~@body)))
 
 ;; TODO make this a macro to setup a handler for a lambda passed see
 ;;      https://github.com/uswitch/lambada/blob/master/src/uswitch/lambada/core.clj
 ;; TODO extract all of the adapter code into a seperate file for reuse
 ;; TODO instead of sample handler create a compojure app route
-(defn -handleRequest
-  "Implementation for RequestStreamHandler handleRequest using IN
-  instream OUT outstream and CTX context object, delegating to
-  handle-request to handle request using ring"
-  [_ in out ctx]
+(deflambdaring playground.core.Handler
+  [in out ctx]
   (handle-request sample-handler in out ctx))
