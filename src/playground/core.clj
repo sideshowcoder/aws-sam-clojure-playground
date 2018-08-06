@@ -82,6 +82,8 @@
 (defmacro deflambdaring
   "Create a named class to use for lambda to call wrapping a ring application."
   [name args & body]
+  ;; TODO this should include a random prefix via gensym, but it didn't work for some odd reason.
+  ;; Check how to make this work.
   `(do
      (gen-class
       :name ~name
