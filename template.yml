@@ -6,9 +6,9 @@ Resources:
   Products:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: playground.core.Handler
+      Handler: playground.sampleapp.Handler
       Runtime: java8
-      Timeout: 15
+      Timeout: 30
       CodeUri: ./target/playground-0.1.0-SNAPSHOT-standalone.jar
       Events:
         SayHello:

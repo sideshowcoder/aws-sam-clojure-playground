@@ -69,12 +69,12 @@
    :body (wrap-body (:body response))})
 
 (defn handle-request
-  "Handle an api-gateway request from IN via a RING-HANDLER writing
+  "Handle an api-gateway request from IN via a RING-APP writing
   response to OUT."
-  [ring-handler in out ctx]
+  [ring-app in out ctx]
   (let [event (stream->event in)
         request (api-gw-event->ring-request event ctx)
-        response (ring-handler request)
+        response (ring-app request)
         event-response (ring-response->api-gw-response response)]
     (with-open [w (io/writer out)]
       (json/write event-response w))))
@@ -82,19 +82,15 @@
 (defmacro deflambdaring
   "Create a named class to use for lambda to call wrapping a ring application."
   [name args & body]
-  ;; TODO this should include a random prefix via gensym, but it didn't work for some odd reason.
-  ;; Check how to make this work.
-  `(do
-     (gen-class
-      :name ~name
-      :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
-     (defn ~(symbol "-handleRequest")
-       ~(into ['this] args)
-       ;; TODO replace with not just body but actually the content on handle-request
-       ~@body)))
+  (let [method-name (symbol "-handleRequest")]
+    `(do
+       (gen-class
+        :name ~name
+        :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
+       (defn ~method-name
+         ~(into ['this] args)
+         ~@body))))
 
-;; TODO make this a macro to setup a handler for a lambda passed see
-;;      https://github.com/uswitch/lambada/blob/master/src/uswitch/lambada/core.clj
 ;; TODO extract all of the adapter code into a seperate file for reuse
 ;; TODO instead of sample handler create a compojure app route
 (deflambdaring playground.core.Handler
