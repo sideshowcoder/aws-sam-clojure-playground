@@ -2,15 +2,10 @@
   (:require [clojure.data.json :as json]
             [clojure.java.io :as io]
             [clojure.string :as s]
-            [ring.util.codec :as codec]
-            [ring.util.response :as r])
+            [ring.util.codec :as codec])
   (:import [com.amazonaws.services.lambda.runtime RequestStreamHandler]
            [java.io InputStream File]
            [clojure.lang ISeq]))
-
-(defn sample-handler
-  [event]
-  (r/response "Hello Lambda, from ring!"))
 
 (defn stream->event
   [in]
@@ -81,18 +76,12 @@
 
 (defmacro deflambdaring
   "Create a named class to use for lambda to call wrapping a ring application."
-  [name args & body]
-  (let [method-name (symbol "-handleRequest")]
+  [name ring-app]
+  (let [handler-method '-handleRequest]
     `(do
        (gen-class
         :name ~name
         :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
-       (defn ~method-name
-         ~(into ['this] args)
-         ~@body))))
-
-;; TODO extract all of the adapter code into a seperate file for reuse
-;; TODO instead of sample handler create a compojure app route
-(deflambdaring playground.core.Handler
-  [in out ctx]
-  (handle-request sample-handler in out ctx))
+       (defn ~handler-method
+         [this# in# out# ctx#]
+         (handle-request ~ring-app in# out# ctx#)))))

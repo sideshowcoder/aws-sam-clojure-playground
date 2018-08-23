@@ -1,1 +1,5 @@
-GET http://127.0.0.1:3000/sayHello/world?some=queryparam&foo=1
+# SimpleRingHandler
+GET http://127.0.0.1:3000/helloRing/world?some=queryparam&foo=1
+
+# CompojureHandler
+GET http://127.0.0.1:3000/helloCompojure/world?some=queryparam&foo=1

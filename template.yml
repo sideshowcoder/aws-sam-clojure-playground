@@ -1,12 +1,12 @@
 WSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: My first serverless application.
+Description: Clojure Lambda with plain Ring and Compojure
 
 Resources:
-  Products:
+  SimpleRingHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: playground.sampleapp.Handler
+      Handler: playground.sample.SimpleRingHandler
       Runtime: java8
       Timeout: 30
       CodeUri: ./target/playground-0.1.0-SNAPSHOT-standalone.jar
@@ -14,5 +14,19 @@ Resources:
         SayHello:
           Type: Api
           Properties:
-            Path: /sayHello/{helloId}
+            Path: /helloRing/{helloId}
+            Method: get
+
+  CompojureHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: playground.sample.CompojureHandler
+      Runtime: java8
+      Timeout: 15
+      CodeUri: ./target/playground-0.1.0-SNAPSHOT-standalone.jar
+      Events:
+        SayHello:
+          Type: Api
+          Properties:
+            Path: /helloCompojure/{helloId}
             Method: get
