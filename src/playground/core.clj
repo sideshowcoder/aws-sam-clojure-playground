@@ -77,10 +77,12 @@
 (defmacro deflambdaring
   "Create a named class to use for lambda to call wrapping a ring application."
   [name ring-app]
-  (let [handler-method '-handleRequest]
+  (let [prefix (gensym)
+        handler-method (symbol (str prefix "handleRequest"))]
     `(do
        (gen-class
         :name ~name
+        :prefix ~prefix
         :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
        (defn ~handler-method
          [this# in# out# ctx#]
